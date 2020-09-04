@@ -2,6 +2,7 @@ from selenium import webdriver
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.contact import ContactHelper
+from fixture.conf_alert import ConfAlert
 
 
 class Application:
@@ -12,6 +13,7 @@ class Application:
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
+        self.conf_alert = ConfAlert(self)
 
     def open_home_page(self):
         wd = self.wd
