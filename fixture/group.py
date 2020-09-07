@@ -53,3 +53,8 @@ class GroupHelper:
         self.fill_group_form(new_group_data)
         self.update_group()
         self.open_group_list()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_group_list()
+        return len(wd.find_elements_by_name("selected[]"))
