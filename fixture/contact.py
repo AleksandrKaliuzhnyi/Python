@@ -13,7 +13,8 @@ class ContactHelper:
 
     def back_to_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home page").click()
+        if not(wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("home")) > 0):
+            wd.find_element_by_link_text("home page").click()
 
     def create(self, contact):
         self.add_new_contact_button()
