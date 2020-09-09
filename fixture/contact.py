@@ -1,4 +1,5 @@
 from selenium.webdriver.support.ui import Select
+from model.contact import Contact
 
 
 class ContactHelper:
@@ -14,7 +15,7 @@ class ContactHelper:
     def back_to_home_page(self):
         wd = self.app.wd
         if not(wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("home")) > 0):
-            wd.find_element_by_link_text("home page").click()
+            wd.find_element_by_link_text("home").click()
 
     def create(self, contact):
         self.add_new_contact_button()
@@ -59,6 +60,7 @@ class ContactHelper:
         self.select_contact()
         self.delete_contact_button()
         self.app.conf_alert.assertRegexpMatches(self.app.conf_alert.close_alert_and_get_its_text(), r"^Delete 1 addresses[\s\S]$")
+        self.back_to_home_page()
 
     def select_contact(self):
         wd = self.app.wd
@@ -81,3 +83,12 @@ class ContactHelper:
     def count(self):
         wd = self.app.wd
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        contacts = []
+        for element in wd.find_elements_by_css_selector("#maintable > tbody > tr:nth-child(n) > td:nth-child(1)"):
+            text = element.text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Contact(firstname=text, lastname=text, id=id))
+        return contacts
