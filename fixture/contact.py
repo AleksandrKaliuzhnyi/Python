@@ -22,6 +22,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         self.submit_update_form()
         self.back_to_home_page()
+        self.contact_cache = None
 
     def fill_contact_form(self, contact):
         self.change_value("firstname", contact.firstname)
@@ -61,6 +62,7 @@ class ContactHelper:
         self.delete_contact_button()
         self.app.conf_alert.assertRegexpMatches(self.app.conf_alert.close_alert_and_get_its_text(), r"^Delete 1 addresses[\s\S]$")
         self.back_to_home_page()
+        self.contact_cache = None
 
     def select_contact(self):
         wd = self.app.wd
@@ -75,6 +77,7 @@ class ContactHelper:
         self.fill_contact_form(new_contact_data)
         self.update_contact()
         self.back_to_home_page()
+        self.contact_cache = None
 
     def edit_contact_button(self):
         wd = self.app.wd
@@ -84,11 +87,14 @@ class ContactHelper:
         wd = self.app.wd
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        contacts = []
-        for element in wd.find_elements_by_css_selector("#maintable > tbody > tr:nth-child(n) > td:nth-child(1)"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contact(firstname=text, lastname=text, id=id))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.contact_cache = []
+            for element in wd.find_elements_by_css_selector("#maintable > tbody > tr:nth-child(n) > td:nth-child(1)"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.contact_cache.append(Contact(firstname=text, lastname=text, id=id))
+        return list(self.contact_cache)
