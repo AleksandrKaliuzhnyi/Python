@@ -58,7 +58,10 @@ class ContactHelper:
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
     def delete(self):
-        self.select_contact()
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
+        self.select_contact_by_index(index)
         self.delete_contact_button()
         self.app.conf_alert.assertRegexpMatches(self.app.conf_alert.close_alert_and_get_its_text(), r"^Delete 1 addresses[\s\S]$")
         self.back_to_home_page()
@@ -68,24 +71,36 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def delete_contact_button(self):
         wd = self.app.wd
         wd.find_element_by_xpath("//input[@value='Delete']").click()
 
-    def edit(self, new_contact_data):
-        self.edit_contact_button()
+    def edit(self):
+        self.edit_contact_by_index(0)
+
+        self.contact_cache = None
+
+    def edit_contact_by_index(self, index, new_contact_data):
+        self.edit_contact_button_by_index(index)
         self.fill_contact_form(new_contact_data)
         self.update_contact()
         self.back_to_home_page()
         self.contact_cache = None
 
     def edit_contact_button(self):
+        self.edit_contact_button_by_index(0)
+
+    def edit_contact_button_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_css_selector("#maintable > tbody > tr:nth-child(n) > td:nth-child(8)")[index].click()
 
     def count(self):
         wd = self.app.wd
-        return len(wd.find_elements_by_name("selected[]"))
+        return len(wd.find_elements_by_css_selector("#maintable > tbody > tr:nth-child(n) > td:nth-child(8)"))
 
     contact_cache = None
 
