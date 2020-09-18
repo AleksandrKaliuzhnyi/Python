@@ -68,6 +68,13 @@ class ContactHelper:
         self.back_to_home_page()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        self.select_contact_by_id(id)
+        self.delete_contact_button()
+        self.app.conf_alert.assertRegexpMatches(self.app.conf_alert.close_alert_and_get_its_text(), r"^Delete 1 addresses[\s\S]$")
+        self.back_to_home_page()
+        self.contact_cache = None
+
     def select_contact(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
@@ -75,6 +82,10 @@ class ContactHelper:
     def select_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def delete_contact_button(self):
         wd = self.app.wd
@@ -117,7 +128,7 @@ class ContactHelper:
                 all_emails = cells[4].text
                 all_phones = cells[5].text
                 id = cells[0].find_element_by_name("selected[]").get_attribute("value")
-                self.contact_cache.append(Contact(firstname=firstname_text, lastname=lastname_text, id=id, all_phones_from_homepage=all_phones, address=address_text, all_emails_from_homepage=all_emails))
+                self.contact_cache.append(Contact(firstname=firstname_text, lastname=lastname_text, id=id, all_phones_from_homepage=all_phones, address=address_text, all_emails_from_homepage=all_emails, ))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
