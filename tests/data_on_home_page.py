@@ -1,6 +1,11 @@
 from random import randrange
 import re
+from fixture.db import DbFixture
 
+def test_compare_data_on_homepage_and_db(app, db):
+    contacts_from_homepage = app.contact.get_contact_list()
+    contacts_from_db = db.get_contact_list_db()
+    assert contacts_from_db == merge_phones_like_on_homepage(contacts_from_homepage)
 
 def test_data_on_home_page(app):
     contacts = app.contact.get_contact_list()
@@ -20,6 +25,7 @@ def test_data_on_contact_view_page(app):
     contact_from_view__page = app.contact.get_contact_from_view_page(index)
     a = merge_phones_like_on_homepage(contact_from_view__page)
     assert contact_from_homepage.all_phones_from_homepage == a
+
 
 def clear(s):
      return re.sub('[() -]', "", s)

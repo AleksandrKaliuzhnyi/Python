@@ -39,8 +39,8 @@ def random_year():
 
 testdata = [Contact(firstname="", lastname="", nickname="")] + [
     Contact(firstname=random_string("firstname", 12), lastname=random_string("lastname", 12), nickname=random_string("nickname", 12), company=random_string("company", 12),
-            address=random_string("address", 12), mobile=random_string("mobile", 10), work=random_string("work", 10), email=random_string("email", 10),
-            bday=random_day(), bmonth=random_month(), byear=random_year())
+            address=random_string("address", 12), home=random_string("home", 10), mobile=random_string("mobile", 10), work=random_string("work", 10), phone2=random_string("phone2", 10),
+            email=random_string("email", 10), email2=random_string("email2", 10), email3=random_string("email3", 10), bday=random_day(), bmonth=random_month(), byear=random_year())
     for i in range(n)
 ]
 

@@ -31,9 +31,14 @@ class ContactHelper:
         self.change_value("nickname", contact.nickname)
         self.change_value("company", contact.company)
         self.change_value("address", contact.address)
+        self.change_value("home", contact.home)
+        self.change_value("address", contact.address)
         self.change_value("mobile", contact.mobile)
         self.change_value("work", contact.work)
+        self.change_value("phone2", contact.phone2)
         self.change_value("email", contact.email)
+        self.change_value("email2", contact.email2)
+        self.change_value("email3", contact.email3)
         self.select_field_value("bday", contact.bday)
         self.select_field_value("bmonth", contact.bmonth)
         self.change_value("byear", contact.byear)
@@ -128,7 +133,7 @@ class ContactHelper:
                 all_emails = cells[4].text
                 all_phones = cells[5].text
                 id = cells[0].find_element_by_name("selected[]").get_attribute("value")
-                self.contact_cache.append(Contact(firstname=firstname_text, lastname=lastname_text, id=id, all_phones_from_homepage=all_phones, address=address_text, all_emails_from_homepage=all_emails, ))
+                self.contact_cache.append(Contact(id=id, firstname=firstname_text, lastname=lastname_text, all_phones_from_homepage=all_phones, address=address_text, all_emails_from_homepage=all_emails))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
